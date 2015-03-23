@@ -142,6 +142,15 @@ public class SODEPClient {
                 return this.dataInputStream.readInt();
             case 3:
                 return this.dataInputStream.readDouble();
+            case 4:
+                int arraySize = this.dataInputStream.readInt();
+                byte[] array = new byte[arraySize];
+                this.dataInputStream.readFully(array);
+                return new ByteArray(array);
+            case 5:
+                return this.dataInputStream.readBoolean();
+            case 6:
+                return this.dataInputStream.readLong();
             default:
                 throw new IOException("Type not supported");
         }
@@ -202,11 +211,11 @@ public class SODEPClient {
         this.dataOutputStream.writeInt(childrenCount);
 
         //for each ValueChild
-        for ( String childName : value.children.keySet()) {
+        for (String childName : value.children.keySet()) {
             this.writeString(childName);
             List<Value> children = value.children.get(childName);
             this.dataOutputStream.writeInt(children.size());
-            for ( Value childValue : children ) {
+            for (Value childValue : children) {
                 this.writeValue(childValue);
             }
         }
@@ -224,6 +233,16 @@ public class SODEPClient {
         } else if (content instanceof Double) {
             this.dataOutputStream.writeByte(3);
             this.dataOutputStream.writeDouble((Double) content);
+        } else if (content instanceof ByteArray) {
+            this.dataOutputStream.writeByte(4);
+            this.dataOutputStream.write(((ByteArray)content).getBytes());
+        } else if (content instanceof Boolean) {
+            this.dataOutputStream.writeByte(5);
+            this.dataOutputStream.writeBoolean((Boolean) content);
+            this.dataOutputStream.write(((ByteArray)content).getBytes());
+        } else if (content instanceof Long) {
+            this.dataOutputStream.writeByte(6);
+            this.dataOutputStream.writeLong((Long) content);
         } else {
             throw new IOException("Unknown type.");
         }
@@ -238,14 +257,13 @@ public class SODEPClient {
 
     /**
      * Close connection
-     *
-     * @throws IOException
      */
-    public void close() throws IOException {
-        if (this.clientSocket != null)
-            this.clientSocket.close();
-
+    public void close() {
+        if (this.clientSocket != null) {
+            try {
+                this.clientSocket.close();
+            } catch (IOException exception) { /*not interested*/ }
+        }
         this.clientSocket = null;
     }
-
 }
