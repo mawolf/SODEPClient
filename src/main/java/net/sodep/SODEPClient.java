@@ -41,7 +41,7 @@ public class SODEPClient {
      *
      * @param hostname The host name
      * @param port     the port number
-     * @param timeout  The timeout value to be used in milliseconds.
+     * @param timeout  The timeout content to be used in milliseconds.
      *                 A timeout of zero is interpreted as an infinite timeout.
      * @throws IOException if an error occurs during the connection
      */
@@ -99,7 +99,7 @@ public class SODEPClient {
      * @throws IOException
      */
     private Value readValue() throws IOException {
-        //value content
+        //content content
         Value result = new Value(readValueContent());
 
         //how many ValueChildren
@@ -114,7 +114,7 @@ public class SODEPClient {
             int valuesCount = this.dataInputStream.readInt();
 
             //Value*
-            List<Value> children = new ArrayList<Value>();
+            List<Value> children = new ArrayList<>();
             for (int j = 0; j < valuesCount; j++) {
                 children.add(readValue());
             }
@@ -124,7 +124,7 @@ public class SODEPClient {
     }
 
     /**
-     * Read content of the value
+     * Read content of the content
      * <p/>
      * Defined as
      * ValueContent ::= 0(byte) | 1(byte) String | 2(byte) int | 3(byte) double
@@ -204,16 +204,16 @@ public class SODEPClient {
      * @param value Value object to write
      */
     private void writeValue(Value value) throws IOException {
-        this.writeValueContent(value.getValue());
-        int childrenCount = value.children.size();
+        this.writeValueContent(value.getContent());
+        int childrenCount = value.getChildrenCount();
 
         //how many ValueChildren
         this.dataOutputStream.writeInt(childrenCount);
 
         //for each ValueChild
-        for (String childName : value.children.keySet()) {
+        for (String childName : value.getChildren().keySet()) {
             this.writeString(childName);
-            List<Value> children = value.children.get(childName);
+            List<Value> children = value.getChildren().get(childName);
             this.dataOutputStream.writeInt(children.size());
             for (Value childValue : children) {
                 this.writeValue(childValue);

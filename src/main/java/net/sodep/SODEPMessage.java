@@ -19,12 +19,12 @@ package net.sodep;
 
 public class SODEPMessage {
 
-    private Long messageId;
-    private String resourcePath;
-    private String operationName;
+    private final Long messageId;
+    private final String resourcePath;
+    private final String operationName;
 
-    private Fault fault;
-    private Value value;
+    private final Fault fault;
+    private final Value value;
 
     public SODEPMessage(Long messageId, String resourcePath,
                         String operationName, Fault fault, Value value) {

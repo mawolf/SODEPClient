@@ -19,7 +19,7 @@ package net.sodep;
 
 public class ByteArray {
 
-    private byte[] bytes;
+    private final byte[] bytes;
 
     public ByteArray(byte[] bytes) {
         this.bytes = bytes;

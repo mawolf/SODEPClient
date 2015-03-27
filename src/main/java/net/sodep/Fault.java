@@ -18,7 +18,7 @@ package net.sodep;
  */
 
 public class Fault {
-    private String faultName;
+    private final String faultName;
     private Value additionalInfo;
 
     public Fault(String faultName) {

@@ -24,30 +24,58 @@ import java.util.Map;
 
 public class Value {
 
-    protected Object value;
-    protected Map<String, List<Value>> children = new HashMap<String, List<Value>>();
+    protected Object content;
+    private Map<String, List<Value>> children;
 
-    public Value(Object value) {
-        this.value = value;
+    public Value(Object content) {
+        this.content = content;
     }
 
     public Value() {
-        this.value = null;
+        this.content = null;
     }
 
-    public Object getValue() {
-        return this.value;
+    public Object getContent() {
+        return this.content;
     }
 
-    public void setValue(Object value) {
-        this.value = value;
+    public void setContent(Object value) {
+        this.content = value;
     }
 
-    public Map<String, List<Value>> children() {
-        return this.children;
+    public Map<String, List<Value>> getChildren() {
+        if (this.children == null)
+            return new HashMap<>();
+
+        return new HashMap<>(this.children);
+    }
+
+    public int getChildrenCount() {
+        if (this.children == null)
+            return 0;
+
+        return this.children.size();
     }
 
     public void setChildren(String childName, List<Value> children) {
-        this.children.put(childName,children);
+        if (this.children == null)
+            this.children = new HashMap<>();
+
+        this.children.put(childName, children);
     }
+
+    public void setChild(String childName, Value child) {
+        List<Value> values = new ArrayList<>();
+        values.add(child);
+        this.setChildren(childName, values);
+    }
+
+    public List<Value> getChildrenWithName(String name) {
+        return new ArrayList<>(this.children.get(name));
+    }
+
+    public Value getFirstChildWithName(String name) {
+        return this.children.get(name).get(0);
+    }
+
 }

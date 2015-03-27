@@ -41,7 +41,7 @@ public class Test {
             SODEPMessage received = sodepClient.readMessage();
             System.out.println("done.");
 
-            System.out.println("Received: " + received.getValue().getValue());
+            System.out.println("Received: " + received.getValue().getContent());
         } finally {
             sodepClient.close();
         }
