@@ -71,6 +71,9 @@ public class Value {
     }
 
     public List<Value> getChildrenWithName(String name) {
+        if (this.children == null)
+            return new ArrayList<>();
+
         return new ArrayList<>(this.children.get(name));
     }
 
